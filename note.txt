@@ -1,0 +1,107 @@
+// https://jdk.java.net/
+JDK
+
+//
+DB
+
+// https://code.visualstudio.com/download
+VS Code
+
+/*
+プロジェクト
+    src
+        main
+            java.com.example.demo
+                controller
+                    コントローラ.java
+                エントリポイント.java
+            resources
+                templates
+                    ビュー.html
+    ビルド.gradle
+*/
+
+// コントローラ.java
+package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class コントローラ {
+    @GetMapping("パス")
+    public String メソッド() {
+        return "ページ";
+    }
+}
+
+// エントリポイント.java
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class エントリポイント {
+    public static void main(String[] args) {
+        SpringApplication.run(エントリポイント.class, args);
+    }
+}
+
+// ビュー.html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <title>Hello</title>
+    </head>
+    <body th:with="var = Hello">
+        <p th:text="${var}"></p>
+        <p><a th:text="${var}" th:href="@{${var}}"></a></p>
+        <p th:if="${var} == Hello">
+            <p th:text="${var}"></p>
+        </p>
+        <p th:unless="${var} == Hello">
+            <p th:text="${var}"></p>
+        </p>
+        <p th:each="x : ${var}">
+            <p th:text="${var}"></p>
+        </p>
+        <p th:fragment="frag"></p>
+        <p th:replace="file :: frag"></p>
+    </body>
+</html>
+
+// ビルド.gradle
+plugins {
+	id 'org.springframework.boot' version '2.7.2'
+	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '18'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
